@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {graphql} from 'gatsby'
 import {
   mapEdgesToNodes,
@@ -12,12 +12,6 @@ import SEO from '../components/seo'
 import Layout from '../containers/layout'
 import EightBallContainer from '../components/EightBall/EightBallContainer'
 
-import Shake from '../../static/js/shake'
-
-const myShakeEvent = new Shake({
-  threshold: 15, // optional shake strength threshold
-  timeout: 1000 // optional, determines the frequency of event generation
-});
 
 
 export const query = graphql`
@@ -46,10 +40,61 @@ const shakeEventDidOccur = () => {
   alert('shake!');
 }
 
+
+// const detectShake = () => {
+
+//     var current = e.accelerationIncludingGravity;
+//     var currentTime;
+//     var timeDifference;
+//     var deltaX = 0;
+//     var deltaY = 0;
+//     var deltaZ = 0;
+
+//     if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
+//         this.lastX = current.x;
+//         this.lastY = current.y;
+//         this.lastZ = current.z;
+//         return;
+//     }
+
+//     deltaX = Math.abs(this.lastX - current.x);
+//     deltaY = Math.abs(this.lastY - current.y);
+//     deltaZ = Math.abs(this.lastZ - current.z);
+
+//     if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
+//         //calculate time in milliseconds since last shake registered
+//         currentTime = new Date();
+//         timeDifference = currentTime.getTime() - this.lastTime.getTime();
+
+//         if (timeDifference > this.options.timeout) {
+//             window.dispatchEvent(this.event);
+//             this.lastTime = new Date();
+//         }
+//     }
+
+//     this.lastX = current.x;
+//     this.lastY = current.y;
+//     this.lastZ = current.z;
+
+
+// }
+
 const IndexPage = props => {
   const {data, errors} = props
-  myShakeEvent.start()
-  window.addEventListener('shake', shakeEventDidOccur, false)
+  
+  if (typeof window === 'undefined') {
+    global.window = {}
+  }
+
+  useEffect(() => {
+    return function cleanup() {
+      window.removeEventListener('devicemotion', shakeEventDidOccur, false)
+    }
+  })
+  
+  if ('ondevicemotion' in window) {
+    window.addEventListener('devicemotion', shakeEventDidOccur, false);
+  }
 
 
 
