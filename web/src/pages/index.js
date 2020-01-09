@@ -10,6 +10,7 @@ import GraphQLErrorList from '../components/graphql-error-list'
 import ProjectPreviewGrid from '../components/project-preview-grid'
 import SEO from '../components/seo'
 import Layout from '../containers/layout'
+import EightBallContainer from '../components/EightBall/EightBallContainer'
 
 export const query = graphql`
   query IndexPageQuery {
@@ -18,41 +19,13 @@ export const query = graphql`
       description
       keywords
     }
-    projects: allSanitySampleProject(
-      limit: 6
-      sort: {fields: [publishedAt], order: DESC}
-      filter: {slug: {current: {ne: null}}, publishedAt: {ne: null}}
-    ) {
-      edges {
-        node {
-          id
-          mainImage {
-            crop {
-              _key
-              _type
-              top
-              bottom
-              left
-              right
-            }
-            hotspot {
-              _key
-              _type
-              x
-              y
-              height
-              width
-            }
-            asset {
-              _id
-            }
-            alt
-          }
-          title
-          _rawExcerpt
-          slug {
-            current
-          }
+    index: sanityIndex(id: {eq: "b7e5265c-840c-5bf6-ab2a-a2f1ad10e98a"}) {
+      id
+      header
+      subheader
+      threeObj {
+        asset {
+          url
         }
       }
     }
@@ -71,30 +44,37 @@ const IndexPage = props => {
   }
 
   const site = (data || {}).site
-  const projectNodes = (data || {}).projects
-    ? mapEdgesToNodes(data.projects)
-      .filter(filterOutDocsWithoutSlugs)
-      .filter(filterOutDocsPublishedInTheFuture)
-    : []
+  // const projectNodes = (data || {}).projects
+  //   ? mapEdgesToNodes(data.projects)
+  //     .filter(filterOutDocsWithoutSlugs)
+  //     .filter(filterOutDocsPublishedInTheFuture)
+  //   : []
+
+  const indexData = (data || {}).index;
 
   if (!site) {
     throw new Error(
       'Missing "Site settings". Open the studio at http://localhost:3333 and add some content to "Site settings" and restart the development server.'
     )
   }
+  console.log(indexData);
 
   return (
     <Layout>
       <SEO title={site.title} description={site.description} keywords={site.keywords} />
       <Container>
-        <h1 hidden>Welcome to {site.title}</h1>
-        {projectNodes && (
+        {/* <h1 hidden>Welcome to {site.title}</h1> */}
+        <h1>{indexData.header}</h1>
+        <h2>{indexData.subheader}</h2>
+        <EightBallContainer path={ indexData.threeObj.asset.url }/>
+        
+        {/*projectNodes && (
           <ProjectPreviewGrid
             title='Latest projects'
             nodes={projectNodes}
             browseMoreHref='/archive/'
           />
-        )}
+        )*/}
       </Container>
     </Layout>
   )

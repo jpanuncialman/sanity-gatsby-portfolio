@@ -1,0 +1,162 @@
+import React, { Component } from 'react'
+import EightBall from './EightBall'
+import * as THREE from "three";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+// import THREEx from '../../../static/js/threex.domevents.js'
+
+// import initializeDomEvents from 'threex.domevents';
+// import GLTFLoader from 'three-gltf-loader';
+// import model from '../../assets/archive/8ball.gltf';
+
+
+export default class EightBallContainer extends Component {
+    componentDidMount() {
+    //   threeEntryPoint(this.threeRootElement);
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0xdddddd);
+        // var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer.setSize( window.innerWidth, window.innerHeight);
+        // this.renderer.setClearColor('#e5e5e5')
+        // renderer.setSize( this.mount.clientWidth, this.mount.clientHeight );
+        this.mount.appendChild( this.renderer.domElement );
+        // var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        // var cube = new THREE.Mesh( geometry, material );
+        // scene.add( cube );
+        // camera.position.z = 5;
+        // this.camera = new THREE.PerspectiveCamera(40,this.mount.clientWidth/this.mount.clientHeight,1,5000);
+        this.camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
+        // camera.rotation.y = 45/180*Math.PI;
+        this.camera.position.x = 25;
+        this.camera.position.y = 15;
+        this.camera.position.z = 50;
+
+        // window.addEventListener('resize', () => {
+        //     renderer.setSize(this.mount.clientWidth, this.mount.clientHeight)
+        //     camera.aspect = this.mount.clientWidth / this.mount.clientHeight;
+        //     camera.updateProjectionMatrix()
+        // })
+
+        let hlight = new THREE.AmbientLight (0x404040,100);
+        this.scene.add(hlight);
+
+    //     const geometry = new THREE.BoxGeometry(10, 10, 10)
+    // const material = new THREE.MeshBasicMaterial({ color: '#433F81'    })
+    // this.cube = new THREE.Mesh(geometry, material)
+    this.scene.add(this.cube)
+
+        // const domEvents	= new THREEx.DomEvents(camera, renderer.domElement)
+        // let directionalLight = new THREE.DirectionalLight(0xffffff,100);
+        // directionalLight.position.set(0,1,0);
+        // directionalLight.castShadow = true;
+        // scene.add(directionalLight);
+        // let light = new THREE.PointLight(0xc4c4c4,10);
+        // light.position.set(0,300,500);
+        // scene.add(light);
+        // let light2 = new THREE.PointLight(0xFFFFFF,1, 500);
+        // light2.position.set(500,100,0);
+        // this.scene.add(light2);
+        // let light3 = new THREE.PointLight(0xc4c4c4,10);
+        // light3.position.set(0,100,-500);
+        // scene.add(light3);
+        // let light4 = new THREE.PointLight(0xc4c4c4,10);
+        // light4.position.set(-500,300,500);
+        // scene.add(light4);
+
+        // this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+
+
+        
+
+        const loader = new GLTFLoader();
+        loader.load('../../../assets/archive/8ball.gltf', (gltf) => {
+            console.log(gltf.scene);
+            let ball = gltf.scene.children[0];
+            console.log(ball);
+            ball.scale.set(20,20,20);
+            // ball.rotation.x = Math.PI / 3
+            // ball.rotation.y = Math.PI / 2
+            // ball.rotation.z = Math.PI / 4
+            // ball.position.set({x: 50, y: 50, z: 0})
+            // ball.addEventListener("onclick", onMouseClick)
+            this.scene.add(gltf.scene);
+            this.animate()
+            // this.renderer.render(this.scene, this.camera);
+        }, (xhr) => {
+
+        }, (error) => {
+            console.log(error);
+        });
+        
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
+        console.log("Scene")
+        console.log(this.scene);
+        // document.body.addEventListener("onclick", onMouseClick, false)
+
+        // const renderer = this.renderer;
+        // let animate = () => {
+        //     console.log("ANIMATE!!!")
+        //     requestAnimationFrame( animate );
+        //     // cube.rotation.x += 0.01;
+        //     // cube.rotation.y += 0.01;
+            
+        //     renderer.render( this.scene, this.camera );
+        // };
+        // console.log(this.renderer);
+        // this.renderer.render( this.scene, this.camera );
+        // this.animate();
+
+    }
+
+    componentWillUnmount() {
+        cancelAnimationFrame(this.animate)
+    }
+
+    animate = () => {
+        requestAnimationFrame(this.animate)
+        // this.controls.update()
+        this.renderer.render(this.scene, this.camera)
+    }
+
+    onMouseClick = ( event, mesh ) => {
+        event.preventDefault();
+        const windowArea = event.target.getBoundingClientRect();
+        
+        // this.mouse.x = ( event.clientX / this.renderer.domElement.width ) * 2 - 1;
+        // this.mouse.y = - ( event.clientY / this.renderer.domElement.height ) * 2 + 1;
+        this.mouse.x = ( (event.clientX - this.renderer.domElement.offsetLeft) / this.renderer.domElement.width ) * 2 - 1;
+        this.mouse.y = -( (event.clientY - this.renderer.domElement.offsetTop) / this.renderer.domElement.height ) * 2 + 1;
+        console.log(this.raycaster)
+        this.raycaster.setFromCamera( this.mouse, this.camera );
+        let intersects = this.raycaster.intersectObjects(this.scene.children, true);
+        console.log(intersects);
+        if (intersects.length > 0) {
+            alert("Bark");
+            console.log("Meowwwww")
+        }
+    }
+
+    onMouseMove = (event) => {
+        event.preventDefault();
+        const windowArea = event.target.getBoundingClientRect();
+        this.mouse.x = ( (event.clientX - this.renderer.domElement.offsetLeft) / this.renderer.domElement.width ) * 2 - 1;
+        this.mouse.y = -( (event.clientY - this.renderer.domElement.offsetTop) / this.renderer.domElement.height ) * 2 + 1;
+
+        let intersects = this.raycaster.intersectObjects(this.scene.children, true);
+        if (intersects.length > 0) {
+            alert("Mouseover")
+        }
+    }
+
+    render () {
+        return (
+          <div /*onMouseOver={e => this.onMouseMove(e, [this.mesh])}*/ onClick={e => this.onMouseClick(e, [this.mesh])} ref={element => this.mount = element} >
+            <EightBall />
+          </div>
+        );
+    }
+  }

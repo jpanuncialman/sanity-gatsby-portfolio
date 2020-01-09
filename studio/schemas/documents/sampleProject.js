@@ -50,7 +50,32 @@ export default {
     {
       name: 'mainImage',
       title: 'Main image',
-      type: 'figure'
+      type: 'image'
+    },
+    {
+      name: 'mainImageCaption',
+      title: 'Main Image Caption',
+      type: 'projectPortableText'
+    },
+    {
+      name: 'imageTwo',
+      title: 'Image Two',
+      type: 'image'
+    },
+    {
+      name: 'imageTwoCaption',
+      title: 'Image Two Caption',
+      type: 'projectPortableText'
+    },
+    {
+      name: 'imageThree',
+      title: 'Image Three',
+      type: 'image'
+    },
+    {
+      name: 'imageThreeCaption',
+      title: 'Image Three Caption',
+      type: 'projectPortableText'
     },
     {
       name: 'categories',

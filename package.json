@@ -14,6 +14,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "file-loader": "^5.0.2",
+    "gltf-webpack-loader": "^1.0.6",
     "lerna": "^3.13.1"
+  },
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-three-fiber": "^3.0.17",
+    "shake.js": "^1.2.2",
+    "styled-components": "^4.4.1",
+    "three": "^0.112.1",
+    "three-gltf-loader": "^1.111.0",
+    "threex.domevents": "^1.0.1"
   }
 }
