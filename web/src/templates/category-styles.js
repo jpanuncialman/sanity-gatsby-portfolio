@@ -28,6 +28,11 @@ export const StyledListItemContainer = styled.div`
     margin: 2em 0;
     flex-direction: ${({second}) => second ? 'row-reverse' : 'row'}
     min-height: 750px;
+    div {
+        width: 100%;
+    max-width: 1000px;
+    }
+    
 `
 
 export const StyledTextContainer = styled.div`
@@ -38,10 +43,10 @@ export const StyledTextContainer = styled.div`
 `
 
 export const StyledListItemImage = styled.img`
-    max-width: 1000px;
     height: auto;
     opacity: 0.5;
     transition: all 0.5s ease-in-out;
+    width: 100%;
 
     &:hover {
         opacity: 1;

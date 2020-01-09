@@ -12,6 +12,14 @@ import SEO from '../components/seo'
 import Layout from '../containers/layout'
 import EightBallContainer from '../components/EightBall/EightBallContainer'
 
+import Shake from '../../static/js/shake'
+
+const myShakeEvent = new Shake({
+  threshold: 15, // optional shake strength threshold
+  timeout: 1000 // optional, determines the frequency of event generation
+});
+
+
 export const query = graphql`
   query IndexPageQuery {
     site: sanitySiteSettings(_id: {regex: "/(drafts.|)siteSettings/"}) {
@@ -32,8 +40,19 @@ export const query = graphql`
   }
 `
 
+const shakeEventDidOccur = () => {
+
+  //put your own code here etc.
+  alert('shake!');
+}
+
 const IndexPage = props => {
   const {data, errors} = props
+  myShakeEvent.start()
+  window.addEventListener('shake', shakeEventDidOccur, false)
+
+
+
 
   if (errors) {
     return (
