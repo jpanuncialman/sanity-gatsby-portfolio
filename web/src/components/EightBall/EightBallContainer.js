@@ -3,6 +3,11 @@ import EightBall from './EightBall'
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+
+import { StyledContainer } from './EightBallContainerStyles'
+
+import LoadingScreen from '../LoadingScreen/LoadingScreen'
+
 // import THREEx from '../../../static/js/threex.domevents.js'
 
 // import initializeDomEvents from 'threex.domevents';
@@ -11,15 +16,23 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 
 export default class EightBallContainer extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            showLoading: false
+        }
+    }
+
     componentDidMount() {
     //   threeEntryPoint(this.threeRootElement);
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xdddddd);
+        // this.scene.background = new THREE.Color(0xdddddd);
         // var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
         
         this.renderer = new THREE.WebGLRenderer({antialias: true});
-        this.renderer.setSize( window.innerWidth, window.innerHeight);
-        // this.renderer.setClearColor('#e5e5e5')
+        this.renderer.setSize( this.mount.clientWidth, this.mount.clientHeight);
+        this.renderer.setClearColor('#000000')
         // renderer.setSize( this.mount.clientWidth, this.mount.clientHeight );
         this.mount.appendChild( this.renderer.domElement );
         // var geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -27,12 +40,12 @@ export default class EightBallContainer extends Component {
         // var cube = new THREE.Mesh( geometry, material );
         // scene.add( cube );
         // camera.position.z = 5;
-        // this.camera = new THREE.PerspectiveCamera(40,this.mount.clientWidth/this.mount.clientHeight,1,5000);
-        this.camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
+        this.camera = new THREE.PerspectiveCamera(75,this.mount.clientWidth/this.mount.clientHeight,0.1,1000);
+        // this.camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
         // camera.rotation.y = 45/180*Math.PI;
-        this.camera.position.x = 25;
-        this.camera.position.y = 15;
-        this.camera.position.z = 50;
+        this.camera.position.x = 0;
+        this.camera.position.y = 0;
+        this.camera.position.z = 10;
 
         // window.addEventListener('resize', () => {
         //     renderer.setSize(this.mount.clientWidth, this.mount.clientHeight)
@@ -46,7 +59,49 @@ export default class EightBallContainer extends Component {
     //     const geometry = new THREE.BoxGeometry(10, 10, 10)
     // const material = new THREE.MeshBasicMaterial({ color: '#433F81'    })
     // this.cube = new THREE.Mesh(geometry, material)
-    this.scene.add(this.cube)
+    // this.scene.add(this.cube)
+
+        let geometry = new THREE.SphereGeometry( 5, 32, 32 );
+        let material = new THREE.MeshBasicMaterial( {color: 0x2C2C2C} );
+        let sphere = new THREE.Mesh( geometry, material );
+        // this.scene.add(sphere);
+
+        let whiteSectionGeometry = new THREE.SphereGeometry( 2.5, 32, 32, 0, 3, 0, 3.1 );
+        let whiteSectionMaterial = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} );
+        let whiteSection = new THREE.Mesh( whiteSectionGeometry, whiteSectionMaterial )
+        whiteSectionGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 3));
+        // this.scene.add(whiteSection)
+        whiteSection.position.set(0, 0, 3)
+
+        // let textGeometry = new THREE.TextBufferGeometry('8', {})
+        // let textMaterial = new THREE>MeshBasicMaterial( {color: 0x000000} )
+        // let text = new THREE.Mesh( textGeometry, textMaterial )
+        // this.scene.add(text)
+
+        var mergeGeometry = new THREE.Geometry();
+        mergeGeometry.merge(geometry, geometry.matrix);
+        mergeGeometry.merge(whiteSectionGeometry, whiteSectionGeometry.matrix, 1);
+        // this.scene.add(mergeGeometry)
+
+        this.mesh = new THREE.Mesh(mergeGeometry, [material, whiteSectionMaterial]);
+        this.scene.add(this.mesh);
+
+        let loader = new THREE.FontLoader();
+        loader.load( '../../../assets/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+            var geometry = new THREE.TextBufferGeometry( 'Hello three.js!', {
+                font: font,
+                size: 80,
+                height: 5,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 10,
+                bevelSize: 8,
+                bevelOffset: 0,
+                bevelSegments: 5
+            } );
+        } );
+        // text.position.set(0, 0, 4)
 
         // const domEvents	= new THREEx.DomEvents(camera, renderer.domElement)
         // let directionalLight = new THREE.DirectionalLight(0xffffff,100);
@@ -71,25 +126,25 @@ export default class EightBallContainer extends Component {
 
         
 
-        const loader = new GLTFLoader();
-        loader.load('../../../assets/archive/8ball.gltf', (gltf) => {
-            console.log(gltf.scene);
-            let ball = gltf.scene.children[0];
-            console.log(ball);
-            ball.scale.set(20,20,20);
-            // ball.rotation.x = Math.PI / 3
-            // ball.rotation.y = Math.PI / 2
-            // ball.rotation.z = Math.PI / 4
-            // ball.position.set({x: 50, y: 50, z: 0})
-            // ball.addEventListener("onclick", onMouseClick)
-            this.scene.add(gltf.scene);
-            this.animate()
-            // this.renderer.render(this.scene, this.camera);
-        }, (xhr) => {
+        // const loader = new GLTFLoader();
+        // loader.load('../../../assets/archive/8ball.gltf', (gltf) => {
+        //     console.log(gltf.scene);
+        //     let ball = gltf.scene.children[0];
+        //     console.log(ball);
+        //     ball.scale.set(20,20,20);
+        //     // ball.rotation.x = Math.PI / 3
+        //     // ball.rotation.y = Math.PI / 2
+        //     // ball.rotation.z = Math.PI / 4
+        //     // ball.position.set({x: 50, y: 50, z: 0})
+        //     // ball.addEventListener("onclick", onMouseClick)
+        //     this.scene.add(gltf.scene);
+        //     this.animate()
+        //     // this.renderer.render(this.scene, this.camera);
+        // }, (xhr) => {
 
-        }, (error) => {
-            console.log(error);
-        });
+        // }, (error) => {
+        //     console.log(error);
+        // });
         
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
@@ -108,7 +163,7 @@ export default class EightBallContainer extends Component {
         // };
         // console.log(this.renderer);
         // this.renderer.render( this.scene, this.camera );
-        // this.animate();
+        this.animate();
 
     }
 
@@ -119,6 +174,8 @@ export default class EightBallContainer extends Component {
     animate = () => {
         requestAnimationFrame(this.animate)
         // this.controls.update()
+        this.mesh.rotation.x += 0.01;
+        this.mesh.rotation.y +=0.01;
         this.renderer.render(this.scene, this.camera)
     }
 
@@ -135,8 +192,11 @@ export default class EightBallContainer extends Component {
         let intersects = this.raycaster.intersectObjects(this.scene.children, true);
         console.log(intersects);
         if (intersects.length > 0) {
-            alert("Bark");
-            console.log("Meowwwww")
+            this.setState({ showLoading: true }, () => {
+                setTimeout(() => {
+                    window.location.href = '/art'
+                }, 2000)
+            });
         }
     }
 
@@ -154,9 +214,14 @@ export default class EightBallContainer extends Component {
 
     render () {
         return (
-          <div /*onMouseOver={e => this.onMouseMove(e, [this.mesh])}*/ onClick={e => this.onMouseClick(e, [this.mesh])} ref={element => this.mount = element} >
+          <StyledContainer /*onMouseOver={e => this.onMouseMove(e, [this.mesh])}*/ onClick={e => this.onMouseClick(e, [this.mesh])} ref={element => this.mount = element} >
+            {
+                this.state.showLoading ?
+                <LoadingScreen /> :
+                null
+            }
             <EightBall />
-          </div>
+          </StyledContainer>
         );
     }
   }
