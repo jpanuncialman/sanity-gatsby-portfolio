@@ -165,13 +165,13 @@ export default class EightBallContainer extends Component {
         // this.renderer.render( this.scene, this.camera );
         this.animate();
         if ('ondevicemotion' in window) {
-            window.addEventListener('devicemotion', shakeEventDidOccur, false);
+            window.addEventListener('devicemotion', this.shakeEventDidOccur, false);
           }
     }
 
     componentWillUnmount() {
         cancelAnimationFrame(this.animate)
-        window.removeEventListener('devicemotion', shakeEventDidOccur, false)
+        window.removeEventListener('devicemotion', this.shakeEventDidOccur, false)
     }
 
     animate = () => {
