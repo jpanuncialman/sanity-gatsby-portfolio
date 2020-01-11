@@ -164,11 +164,14 @@ export default class EightBallContainer extends Component {
         // console.log(this.renderer);
         // this.renderer.render( this.scene, this.camera );
         this.animate();
-
+        if ('ondevicemotion' in window) {
+            window.addEventListener('devicemotion', shakeEventDidOccur, false);
+          }
     }
 
     componentWillUnmount() {
         cancelAnimationFrame(this.animate)
+        window.removeEventListener('devicemotion', shakeEventDidOccur, false)
     }
 
     animate = () => {
@@ -211,6 +214,45 @@ export default class EightBallContainer extends Component {
             alert("Mouseover")
         }
     }
+
+    shakeEventDidOccur = () => {
+
+        //put your own code here etc.
+        // alert('shake!');
+      
+          // Shake sensitivity (a lower number is more)
+          var sensitivity = 35;
+      
+          // Position variables
+          var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+      
+          // Listen to motion events and update the position
+          window.addEventListener('devicemotion', function (e) {
+              x1 = e.accelerationIncludingGravity.x;
+              y1 = e.accelerationIncludingGravity.y;
+              z1 = e.accelerationIncludingGravity.z;
+          }, false);
+      
+          // Periodically check the position and fire
+          // if the change is greater than the sensitivity
+          // setInterval(function () {
+              var change = Math.abs(x1-x2+y1-y2+z1-z2);
+      
+              if (change > sensitivity) {
+                this.setState({ showLoading: true }, () => {
+                    setTimeout(() => {
+                        window.location.href = '/art'
+                    }, 2000)
+                });
+              }
+      
+              // Update new position
+              x2 = x1;
+              y2 = y1;
+              z2 = z1;
+          // }, 1000);
+      }
+      
 
     render () {
         return (
