@@ -40,7 +40,7 @@ const shakeEventDidOccur = () => {
   // alert('shake!');
 
     // Shake sensitivity (a lower number is more)
-    var sensitivity = 20;
+    var sensitivity = 25;
 
     // Position variables
     var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
