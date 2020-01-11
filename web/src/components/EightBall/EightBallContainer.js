@@ -86,21 +86,21 @@ export default class EightBallContainer extends Component {
         this.mesh = new THREE.Mesh(mergeGeometry, [material, whiteSectionMaterial]);
         this.scene.add(this.mesh);
 
-        let loader = new THREE.FontLoader();
-        loader.load( '../../../assets/fonts/helvetiker_regular.typeface.json', function ( font ) {
+        // let loader = new THREE.FontLoader();
+        // loader.load( '../../../assets/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-            var geometry = new THREE.TextBufferGeometry( 'Hello three.js!', {
-                font: font,
-                size: 80,
-                height: 5,
-                curveSegments: 12,
-                bevelEnabled: true,
-                bevelThickness: 10,
-                bevelSize: 8,
-                bevelOffset: 0,
-                bevelSegments: 5
-            } );
-        } );
+        //     var geometry = new THREE.TextBufferGeometry( 'Hello three.js!', {
+        //         font: font,
+        //         size: 80,
+        //         height: 5,
+        //         curveSegments: 12,
+        //         bevelEnabled: true,
+        //         bevelThickness: 10,
+        //         bevelSize: 8,
+        //         bevelOffset: 0,
+        //         bevelSegments: 5
+        //     } );
+        // } );
         // text.position.set(0, 0, 4)
 
         // const domEvents	= new THREEx.DomEvents(camera, renderer.domElement)
