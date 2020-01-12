@@ -8,10 +8,10 @@ const StyledContainer = styled.div`
   color: #fff;
 `
 
-const Container = ({children}) => {
+const Container = (props) => {
   return (
-  <StyledContainer className={styles.root}>
-    {children}
+  <StyledContainer location={props.location} className={styles.root}>
+    {props.children}
     </StyledContainer>
   )
 }

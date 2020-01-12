@@ -2,6 +2,8 @@ import {graphql, StaticQuery} from 'gatsby'
 import React, {useState} from 'react'
 import Layout from '../components/layout'
 
+import { Router, withRouter } from 'react-router'
+
 const query = graphql`
   query SiteTitleQuery {
     site: sanitySiteSettings(_id: {regex: "/(drafts.|)siteSettings/"}) {
@@ -34,6 +36,7 @@ function LayoutContainer (props) {
             siteTitle={data.site.title}
             onHideNav={handleHideNav}
             onShowNav={handleShowNav}
+            location={props.location}
           />
         )
       }}
