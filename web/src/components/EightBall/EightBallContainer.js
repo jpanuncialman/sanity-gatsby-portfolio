@@ -250,7 +250,7 @@ export default class EightBallContainer extends Component {
               x2 = x1;
               y2 = y1;
               z2 = z1;
-          }, 1000);
+          }, 250);
       }
       
 
