@@ -244,6 +244,7 @@ export default class EightBallContainer extends Component {
               var change = Math.abs(this.x1-this.x2+this.y1-this.y2+this.z1-this.z2);
       
               if (change > sensitivity) {
+                alert("WOOOOOF")
                 this.setState({ showLoading: true }, () => {
                     setTimeout(() => {
                         window.location.href = '/art'
@@ -255,7 +256,7 @@ export default class EightBallContainer extends Component {
               this.x2 = this.x1;
               this.y2 = this.y1;
               this.z2 = this.z1;
-          }, 250);
+          }, 150);
       }
       
       shakeEventHelper = (e) => {
