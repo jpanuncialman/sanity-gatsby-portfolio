@@ -245,7 +245,9 @@ export default class EightBallContainer extends Component {
         }
 
         // Listen to motion events and update the position
-        window.addEventListener('devicemotion', function(e) { this.shakeFunc(e) }, false);
+        window.addEventListener('devicemotion', function(e) { x1 = e.accelerationIncludingGravity.x;
+            y1 = e.accelerationIncludingGravity.y;
+            z1 = e.accelerationIncludingGravity.z; }, false);
 
         // Periodically check the position and fire
         // if the change is greater than the sensitivity
