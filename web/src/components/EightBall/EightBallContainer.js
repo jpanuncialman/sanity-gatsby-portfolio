@@ -22,6 +22,13 @@ export default class EightBallContainer extends Component {
         this.state = {
             showLoading: false
         }
+
+        this.x1 = 0
+        this.y1 = 0
+        this.z1 = 0
+        this.x2 = 0
+        this.y2 = 0
+        this.z2 = 0
     }
 
     componentDidMount() {
@@ -164,14 +171,16 @@ export default class EightBallContainer extends Component {
         // console.log(this.renderer);
         // this.renderer.render( this.scene, this.camera );
         this.animate();
-        if ('ondevicemotion' in window) {
-            window.addEventListener('devicemotion', this.shakeEventDidOccur, false);
+
+        if ('ondevicemotion' in window || (typeof window.DeviceMotionEvent != 'undefined')) {
+            // window.addEventListener('devicemotion', this.shakeEventDidOccur, false);
+            this.shakeEventDidOccur();
           }
     }
 
     componentWillUnmount() {
         cancelAnimationFrame(this.animate)
-        window.removeEventListener('devicemotion', this.shakeEventDidOccur, false)
+        window.removeEventListener('devicemotion', this.shakeEventHelper, false)
     }
 
     animate = () => {
@@ -224,19 +233,15 @@ export default class EightBallContainer extends Component {
           var sensitivity = 30;
       
           // Position variables
-          var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+          
       
         //   Listen to motion events and update the position
-          window.addEventListener('devicemotion', function (e) {
-              x1 = e.accelerationIncludingGravity.x;
-              y1 = e.accelerationIncludingGravity.y;
-              z1 = e.accelerationIncludingGravity.z;
-          }, false);
+          window.addEventListener('devicemotion', this.shakeEventHelper, false);
       
           // Periodically check the position and fire
           // if the change is greater than the sensitivity
           setInterval(function () {
-              var change = Math.abs(x1-x2+y1-y2+z1-z2);
+              var change = Math.abs(this.x1-this.x2+this.y1-this.y2+this.z1-this.z2);
       
               if (change > sensitivity) {
                 this.setState({ showLoading: true }, () => {
@@ -247,12 +252,17 @@ export default class EightBallContainer extends Component {
               }
       
               // Update new position
-              x2 = x1;
-              y2 = y1;
-              z2 = z1;
+              this.x2 = this.x1;
+              this.y2 = this.y1;
+              this.z2 = this.z1;
           }, 250);
       }
       
+      shakeEventHelper = (e) => {
+        this.x1 = e.accelerationIncludingGravity.x;
+        this.y1 = e.accelerationIncludingGravity.y;
+        this.z1 = e.accelerationIncludingGravity.z;
+      }
 
     render () {
         return (
