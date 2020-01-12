@@ -74,44 +74,6 @@ const shakeEventDidOccur = () => {
 }
 
 
-// const detectShake = () => {
-
-//     var current = e.accelerationIncludingGravity;
-//     var currentTime;
-//     var timeDifference;
-//     var deltaX = 0;
-//     var deltaY = 0;
-//     var deltaZ = 0;
-
-//     if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
-//         this.lastX = current.x;
-//         this.lastY = current.y;
-//         this.lastZ = current.z;
-//         return;
-//     }
-
-//     deltaX = Math.abs(this.lastX - current.x);
-//     deltaY = Math.abs(this.lastY - current.y);
-//     deltaZ = Math.abs(this.lastZ - current.z);
-
-//     if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
-//         //calculate time in milliseconds since last shake registered
-//         currentTime = new Date();
-//         timeDifference = currentTime.getTime() - this.lastTime.getTime();
-
-//         if (timeDifference > this.options.timeout) {
-//             window.dispatchEvent(this.event);
-//             this.lastTime = new Date();
-//         }
-//     }
-
-//     this.lastX = current.x;
-//     this.lastY = current.y;
-//     this.lastZ = current.z;
-
-
-// }
-
 const IndexPage = props => {
   const {data, errors} = props
 
@@ -142,11 +104,7 @@ const IndexPage = props => {
   }
 
   const site = (data || {}).site
-  // const projectNodes = (data || {}).projects
-  //   ? mapEdgesToNodes(data.projects)
-  //     .filter(filterOutDocsWithoutSlugs)
-  //     .filter(filterOutDocsPublishedInTheFuture)
-  //   : []
+
 
   const indexData = (data || {}).index;
 
@@ -161,18 +119,10 @@ const IndexPage = props => {
     <Layout>
       <SEO title={site.title} description={site.description} keywords={site.keywords} />
       <Container>
-        {/* <h1 hidden>Welcome to {site.title}</h1> */}
         <h1>{indexData.header}</h1>
         <h2>{indexData.subheader}</h2>
-        <EightBallContainer path={ indexData.threeObj.asset.url }/>
-        
-        {/*projectNodes && (
-          <ProjectPreviewGrid
-            title='Latest projects'
-            nodes={projectNodes}
-            browseMoreHref='/archive/'
-          />
-        )*/}
+        <EightBallContainer />
+
       </Container>
     </Layout>
   )

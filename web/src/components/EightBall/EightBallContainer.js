@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-import { StyledContainer } from './EightBallContainerStyles'
+import { StyledParentContainer, StyledContainer } from './EightBallContainerStyles'
 
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
 
@@ -15,8 +15,9 @@ const EightBallContainer = props => {
 
     const scene = new THREE.Scene();
     
-    const renderer = new THREE.WebGLRenderer({antialias: true});
-    const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
+    const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    console.log(containerEl.current)
+    let camera;
 
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
@@ -44,19 +45,15 @@ const EightBallContainer = props => {
 
     useEffect(() => {
 
+        camera = new THREE.PerspectiveCamera(75, containerEl.current.clientWidth / containerEl.current.clientHeight,0.1,1000);
         
-    
-    
-    renderer.setSize( window.innerWidth, window.innerHeight);
-    renderer.setClearColor('#000000')
-    containerEl.current.appendChild(renderer.domElement)
-    
-    camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z = 10;
-
-    
-      
+        renderer.setSize( containerEl.current.clientWidth, containerEl.current.clientHeight);
+        renderer.setClearColor('#000000')
+        containerEl.current.appendChild(renderer.domElement)
+        
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = 12;
 
         animate();
         console.log("TEST")
@@ -153,14 +150,16 @@ const EightBallContainer = props => {
     
 
     return (
-        <StyledContainer id="#eight-ball-container" /*onMouseOver={e => this.onMouseMove(e, [this.mesh])}*/ onClick={e => onMouseClick(e, [mesh])} ref={containerEl} >
-            {
-                showLoading ?
-                <LoadingScreen /> :
-                null
-            }
-            <EightBall />
-        </StyledContainer>
+        <StyledParentContainer minHeight={props.minHeight ? props.minHeight : '500'}>
+            <StyledContainer id="#eight-ball-container" /*onMouseOver={e => this.onMouseMove(e, [this.mesh])}*/ onClick={e => onMouseClick(e, [mesh])} ref={containerEl} >
+                {
+                    showLoading ?
+                    <LoadingScreen /> :
+                    <EightBall />
+                }
+                
+            </StyledContainer>
+        </StyledParentContainer>
     );
   }
 

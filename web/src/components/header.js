@@ -2,21 +2,20 @@ import {Link} from 'gatsby'
 import React from 'react'
 import Icon from './icon'
 import {cn} from '../lib/helpers'
+import EightBallContainer from './EightBall/EightBallContainer'
 
-import styles from './header.module.css'
+// import styles from './header.module.css'
+import { EightBallContainerWrapper } from './HeaderStyles'
 
 const Header = ({onHideNav, onShowNav, showNav, siteTitle}) => (
-  <div className={styles.root}>
-    <div className={styles.wrapper}>
+  <div >
+    <EightBallContainer minHeight={'200'} maxWidth={'200'} />
+    {/*<div className={styles.wrapper}>
       <div className={styles.branding}>
-      <Icon symbol='hamburger' />
-        {/* <Link to='/'>{siteTitle}</Link> */}
+        {/* <Link to='/'>{siteTitle}</Link> 
       </div>
 
-      <button className={styles.toggleNavButton} onClick={showNav ? onHideNav : onShowNav}>
-        <Icon symbol='hamburger' />
-      </button>
-    </div>
+    </div>*/}
   </div>
 )
 

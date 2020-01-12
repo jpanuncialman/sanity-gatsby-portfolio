@@ -13,6 +13,7 @@ import {
   StyledUnorderedList, 
   StyledListItem,
   StyledListItemContainer,
+  StyledPostHeader,
   StyledTextContainer,
   StyledListItemImage
 } from './category-styles'
@@ -67,7 +68,9 @@ const CategoryTemplate = props => {
   const posts = data && data.projects.edges.map(post => {
       return (
         <StyledListItem>
-          <h2>{post.node.title}</h2>
+          <StyledPostHeader>
+            {post.node.title}
+          </StyledPostHeader>
           <StyledListItemContainer first={true}>
             {post.node.mainImage && <div>
               <StyledListItemImage src={post.node.mainImage.asset.url} />
