@@ -38,9 +38,9 @@ const shakeEventDidOccur = () => {
 
   //put your own code here etc.
   // alert('shake!');
-
+  
     // Shake sensitivity (a lower number is more)
-    var sensitivity = 35;
+    var sensitivity = 10;
 
     // Position variables
     var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
@@ -54,18 +54,18 @@ const shakeEventDidOccur = () => {
 
     // Periodically check the position and fire
     // if the change is greater than the sensitivity
-    // setInterval(function () {
+    setInterval(function () {
         var change = Math.abs(x1-x2+y1-y2+z1-z2);
 
         if (change > sensitivity) {
-          alert('Woof!')
+          alert('MEOW')
         }
 
         // Update new position
         x2 = x1;
         y2 = y1;
         z2 = z1;
-    // }, 1000);
+    }, 150);
 }
 
 
@@ -121,7 +121,8 @@ const IndexPage = props => {
   })
   
   if ('ondevicemotion' in window) {
-    window.addEventListener('devicemotion', shakeEventDidOccur, false);
+    shakeEventDidOccur()
+    // window.addEventListener('devicemotion', shakeEventDidOccur, false);
   }
 
 
