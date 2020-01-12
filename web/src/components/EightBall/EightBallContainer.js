@@ -253,7 +253,13 @@ export default class EightBallContainer extends Component {
             var change = Math.abs(x1-x2+y1-y2+z1-z2);
 
             if (change > sensitivity) {
-                alert('MEOW')
+                if (!this.state.showLoading) {
+                    this.setState({ showLoading: true }, () => {
+                        setTimeout(() => {
+                            window.location.href = '/art'
+                        }, 2000)
+                    });
+                }
             }
 
             // Update new position
