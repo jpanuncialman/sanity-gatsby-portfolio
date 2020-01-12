@@ -226,7 +226,7 @@ export default class EightBallContainer extends Component {
           // Position variables
           var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
       
-          // Listen to motion events and update the position
+        //   Listen to motion events and update the position
           window.addEventListener('devicemotion', function (e) {
               x1 = e.accelerationIncludingGravity.x;
               y1 = e.accelerationIncludingGravity.y;
@@ -250,7 +250,7 @@ export default class EightBallContainer extends Component {
               x2 = x1;
               y2 = y1;
               z2 = z1;
-          // }, 1000);
+          }, 1000);
       }
       
 
