@@ -121,7 +121,7 @@ const IndexPage = props => {
   })
   
   if ('ondevicemotion' in window) {
-    shakeEventDidOccur()
+    // shakeEventDidOccur()
     // window.addEventListener('devicemotion', shakeEventDidOccur, false);
   }
 

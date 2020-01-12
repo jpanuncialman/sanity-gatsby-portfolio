@@ -23,12 +23,12 @@ export default class EightBallContainer extends Component {
             showLoading: false
         }
 
-        this.x1 = 0
-        this.y1 = 0
-        this.z1 = 0
-        this.x2 = 0
-        this.y2 = 0
-        this.z2 = 0
+        // this.x1 = 0
+        // this.y1 = 0
+        // this.z1 = 0
+        // this.x2 = 0
+        // this.y2 = 0
+        // this.z2 = 0
     }
 
     componentDidMount() {
@@ -183,7 +183,7 @@ export default class EightBallContainer extends Component {
 
     componentWillUnmount() {
         cancelAnimationFrame(this.animate)
-        window.removeEventListener('devicemotion', function() {this.shakeEventHelper(e)}, false)
+        window.removeEventListener('devicemotion', this.shakeFunc, false)
     }
 
     animate = () => {
@@ -232,34 +232,35 @@ export default class EightBallContainer extends Component {
         //put your own code here etc.
         // alert('shake!');
       
-          // Shake sensitivity (a lower number is more)
-          var sensitivity = 20;
-      
-          // Position variables
-          
-      
-        //   Listen to motion events and update the position
-          window.addEventListener('devicemotion', function(e) {this.shakeEventHelper(e)}, false);
-      
-          // Periodically check the position and fire
-          // if the change is greater than the sensitivity
-          setInterval(function () {
-              var change = Math.abs(this.x1-this.x2+this.y1-this.y2+this.z1-this.z2);
-      
-              if (change > sensitivity) {
-                alert("WOOOOOF");
-                this.setState({ showLoading: true }, () => {
-                    setTimeout(() => {
-                        window.location.href = '/art'
-                    }, 2000)
-                });
-              }
-      
-              // Update new position
-              this.x2 = this.x1;
-              this.y2 = this.y1;
-              this.z2 = this.z1;
-          }, 150);
+        // Shake sensitivity (a lower number is more)
+        var sensitivity = 10;
+
+        // Position variables
+        var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+
+        this.shakeFunc = function (e) {
+            x1 = e.accelerationIncludingGravity.x;
+            y1 = e.accelerationIncludingGravity.y;
+            z1 = e.accelerationIncludingGravity.z;
+        }
+
+        // Listen to motion events and update the position
+        window.addEventListener('devicemotion', this.shakeFunc, false);
+
+        // Periodically check the position and fire
+        // if the change is greater than the sensitivity
+        setInterval(function () {
+            var change = Math.abs(x1-x2+y1-y2+z1-z2);
+
+            if (change > sensitivity) {
+                alert('MEOW')
+            }
+
+            // Update new position
+            x2 = x1;
+            y2 = y1;
+            z2 = z1;
+        }, 150);
       }
       
       shakeEventHelper = (e) => {
