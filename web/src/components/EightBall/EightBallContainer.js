@@ -13,38 +13,37 @@ const EightBallContainer = props => {
     const [showLoading, setShowLoading] = useState(false)
     const containerEl = useRef(null);
 
-    const scene = new THREE.Scene();
+    if (typeof window === 'undefined') {
+        global.window = {}
+      }
+
+    let scene;;
     
-    const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-    console.log(containerEl.current)
+    let renderer;
     let camera;
 
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    let hlight = new THREE.AmbientLight (0x404040,100);
-    scene.add(hlight);
+    let hlight;
 
     let geometry = new THREE.SphereGeometry( 5, 32, 32 );
     let material = new THREE.MeshBasicMaterial( {color: 0x2C2C2C} );
-    let sphere = new THREE.Mesh( geometry, material );
 
-    let whiteSectionGeometry = new THREE.SphereGeometry( 2.5, 32, 32, 0, 3, 0, 3.1 );
-    let whiteSectionMaterial = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} );
-    let whiteSection = new THREE.Mesh( whiteSectionGeometry, whiteSectionMaterial )
-    whiteSectionGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 3));
-    whiteSection.position.set(0, 0, 3)
+    let whiteSectionGeometry,
+    whiteSectionMaterial,
+    whiteSection;
+    
 
 
-    var mergeGeometry = new THREE.Geometry();
-    mergeGeometry.merge(geometry, geometry.matrix);
-    mergeGeometry.merge(whiteSectionGeometry, whiteSectionGeometry.matrix, 1);
+    let mergeGeometry;
+    
 
-    const mesh = new THREE.Mesh(mergeGeometry, [material, whiteSectionMaterial]);
-    scene.add(mesh);
+    let mesh;
 
     useEffect(() => {
-
+        scene = new THREE.Scene()
+        renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         camera = new THREE.PerspectiveCamera(75, containerEl.current.clientWidth / containerEl.current.clientHeight,0.1,1000);
         
         renderer.setSize( containerEl.current.clientWidth, containerEl.current.clientHeight);
@@ -54,6 +53,24 @@ const EightBallContainer = props => {
         camera.position.x = 0;
         camera.position.y = 0;
         camera.position.z = 12;
+
+        hlight = new THREE.AmbientLight (0x404040,100);
+        scene.add(hlight);
+
+        whiteSectionGeometry = new THREE.SphereGeometry( 2.5, 32, 32, 0, 3, 0, 3.1 );
+        whiteSectionMaterial = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} );
+        whiteSection = new THREE.Mesh( whiteSectionGeometry, whiteSectionMaterial )
+
+        whiteSectionGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 3));
+        
+        whiteSection.position.set(0, 0, 3)
+
+        mergeGeometry = new THREE.Geometry();
+        mergeGeometry.merge(geometry, geometry.matrix);
+        mergeGeometry.merge(whiteSectionGeometry, whiteSectionGeometry.matrix, 1);
+
+        mesh = new THREE.Mesh(mergeGeometry, [material, whiteSectionMaterial]);
+        scene.add(mesh);
 
         animate();
         console.log("TEST")
