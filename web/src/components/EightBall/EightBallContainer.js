@@ -173,11 +173,12 @@ export default class EightBallContainer extends Component {
         this.animate();
         console.log("TEST")
         console.log('ondevicemotion' in window)
-        console.lo(typeof window.DeviceMotionEvent != 'undefined')
-        if ('ondevicemotion' in window || (typeof window.DeviceMotionEvent != 'undefined')) {
-            // window.addEventListener('devicemotion', this.shakeEventDidOccur, false);
-            this.shakeEventDidOccur();
-          }
+        console.log(typeof window.DeviceMotionEvent != 'undefined')
+        // if ('ondevicemotion' in window || (typeof window.DeviceMotionEvent != 'undefined')) {
+        //     // window.addEventListener('devicemotion', this.shakeEventDidOccur, false);
+        //     this.shakeEventDidOccur();
+        //   }
+        this.shakeEventDidOccur();
     }
 
     componentWillUnmount() {
@@ -232,7 +233,7 @@ export default class EightBallContainer extends Component {
         // alert('shake!');
       
           // Shake sensitivity (a lower number is more)
-          var sensitivity = 30;
+          var sensitivity = 20;
       
           // Position variables
           
