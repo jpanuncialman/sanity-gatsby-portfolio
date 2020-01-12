@@ -235,7 +235,7 @@ export default class EightBallContainer extends Component {
       
           // Periodically check the position and fire
           // if the change is greater than the sensitivity
-          // setInterval(function () {
+          setInterval(function () {
               var change = Math.abs(x1-x2+y1-y2+z1-z2);
       
               if (change > sensitivity) {
