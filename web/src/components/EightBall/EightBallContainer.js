@@ -171,7 +171,9 @@ export default class EightBallContainer extends Component {
         // console.log(this.renderer);
         // this.renderer.render( this.scene, this.camera );
         this.animate();
-
+        console.log("TEST")
+        console.log('ondevicemotion' in window)
+        console.lo(typeof window.DeviceMotionEvent != 'undefined')
         if ('ondevicemotion' in window || (typeof window.DeviceMotionEvent != 'undefined')) {
             // window.addEventListener('devicemotion', this.shakeEventDidOccur, false);
             this.shakeEventDidOccur();
@@ -244,7 +246,7 @@ export default class EightBallContainer extends Component {
               var change = Math.abs(this.x1-this.x2+this.y1-this.y2+this.z1-this.z2);
       
               if (change > sensitivity) {
-                alert("WOOOOOF")
+                alert("WOOOOOF");
                 this.setState({ showLoading: true }, () => {
                     setTimeout(() => {
                         window.location.href = '/art'
