@@ -44,7 +44,7 @@ const EightBallContainer = props => {
     // Position variables
     var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
     // Shake sensitivity (a lower number is more)
-    var sensitivity = 10;
+    var sensitivity = 25;
 
     useEffect(() => {
         scene = new THREE.Scene()
@@ -87,17 +87,21 @@ const EightBallContainer = props => {
         //     this.shakeEventDidOccur();
         //   }
         shakeEventDidOccur();
-        if (showLoading) {
-            setTimeout(() => {
-                window.location.href = '/art'
-            }, 2000)
-        }
+        
         return function cleanup() {
             cancelAnimationFrame(animate)
             clearInterval(shakeIntervalFunc)
             window.removeEventListener('devicemotion', shakeHelper, false)
         }
     }, [])
+
+    useEffect(() => {
+        if (showLoading) {
+            setTimeout(() => {
+                window.location.href = '/art'
+            }, 2000)
+        }
+    }, [showLoading])
 
     const animate = () => {
         requestAnimationFrame(animate)
