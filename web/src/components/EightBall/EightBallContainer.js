@@ -97,7 +97,7 @@ const EightBallContainer = props => {
             clearInterval(shakeIntervalFunc)
             window.removeEventListener('devicemotion', shakeHelper, false)
         }
-    })
+    }, [])
 
     const animate = () => {
         requestAnimationFrame(animate)
