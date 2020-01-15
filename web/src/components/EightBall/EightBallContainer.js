@@ -41,6 +41,11 @@ const EightBallContainer = props => {
 
     let mesh;
 
+    // Position variables
+    var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+    // Shake sensitivity (a lower number is more)
+    var sensitivity = 10;
+
     useEffect(() => {
         scene = new THREE.Scene()
         renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
@@ -73,6 +78,7 @@ const EightBallContainer = props => {
         scene.add(mesh);
 
         animate();
+        
         console.log("TEST")
         console.log('ondevicemotion' in window)
         console.log(typeof window.DeviceMotionEvent != 'undefined')
@@ -88,7 +94,8 @@ const EightBallContainer = props => {
         }
         return function cleanup() {
             cancelAnimationFrame(animate)
-            window.removeEventListener('devicemotion', shakeEventDidOccur, false)
+            clearInterval(shakeIntervalFunc)
+            window.removeEventListener('devicemotion', shakeHelper, false)
         }
     })
 
@@ -132,38 +139,39 @@ const EightBallContainer = props => {
         //put your own code here etc.
         // alert('shake!');
       
-        // Shake sensitivity (a lower number is more)
-        var sensitivity = 10;
+        
 
-        // Position variables
-        var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+        
 
 
         // Listen to motion events and update the position
-        window.addEventListener('devicemotion', function(e) { 
-            x1 = e.accelerationIncludingGravity.x;
-            y1 = e.accelerationIncludingGravity.y;
-            z1 = e.accelerationIncludingGravity.z; 
-        }, false);
+        window.addEventListener('devicemotion', shakeHelper, false);
 
         // Periodically check the position and fire
         // if the change is greater than the sensitivity
-        setInterval(function () {
-            var change = Math.abs(x1-x2+y1-y2+z1-z2);
+        setInterval(shakeIntervalFunc, 150);
+    }
 
-            if (change > sensitivity) {
-                // if (!this.state.showLoading) {
-                setShowLoading(true);
-                // }
-            }
+    const shakeHelper = (e) => { 
+        x1 = e.accelerationIncludingGravity.x;
+        y1 = e.accelerationIncludingGravity.y;
+        z1 = e.accelerationIncludingGravity.z; 
+    }  
 
-            // Update new position
-            x2 = x1;
-            y2 = y1;
-            z2 = z1;
-        }, 150);
-      }
+    const shakeIntervalFunc = () => {
+        var change = Math.abs(x1-x2+y1-y2+z1-z2);
 
+        if (change > sensitivity) {
+            // if (!this.state.showLoading) {
+            setShowLoading(true);
+            // }
+        }
+
+        // Update new position
+        x2 = x1;
+        y2 = y1;
+        z2 = z1;
+    }
     
 
     return (
