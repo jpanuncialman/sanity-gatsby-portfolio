@@ -11,10 +11,10 @@ export const StyledLoadingContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 4;
 `
 
 export const StyledLoadingHeader = styled.h2`
-    color: #fff;
-    font-size: 48px;
-
+  color: #fff;
+  font-size: 48px;
 `

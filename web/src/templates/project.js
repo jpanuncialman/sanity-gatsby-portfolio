@@ -1,14 +1,16 @@
-import React from 'react'
-import {graphql} from 'gatsby'
-import Container from '../components/container'
-import GraphQLErrorList from '../components/graphql-error-list'
-import Project from '../components/project'
-import SEO from '../components/seo'
-import Layout from '../containers/layout'
+import React from "react";
+import { graphql } from "gatsby";
+import Container from "../components/container";
+import GraphQLErrorList from "../components/graphql-error-list";
+import Project from "../components/project";
+import SEO from "../components/seo";
+import Layout from "../containers/layout";
+
+import { StyledH2 } from "./project-styles";
 
 export const query = graphql`
   query ProjectTemplateQuery($id: String!) {
-    sampleProject: sanitySampleProject(id: {eq: $id}) {
+    sampleProject: sanitySampleProject(id: { eq: $id }) {
       id
       publishedAt
       categories {
@@ -76,26 +78,38 @@ export const query = graphql`
         }
         roles
       }
+      imageTwo {
+        asset {
+          url
+        }
+      }
+      imageThree {
+        asset {
+          url
+        }
+      }
     }
   }
-`
+`;
 
 const ProjectTemplate = props => {
-  const {data, errors} = props
-  const project = data && data.sampleProject
+  const { data, errors } = props;
+  const project = data && data.sampleProject;
+  const category = project.categories[0].title;
   return (
     <Layout>
-      {errors && <SEO title='GraphQL Error' />}
-      {project && <SEO title={project.title || 'Untitled'} />}
+      {errors && <SEO title="GraphQL Error" />}
+      {project && <SEO title={project.title || "Untitled"} />}
 
       {errors && (
         <Container>
           <GraphQLErrorList errors={errors} />
         </Container>
       )}
+      {category && <StyledH2>{category}</StyledH2>}
       {project && <Project {...project} />}
     </Layout>
-  )
-}
+  );
+};
 
-export default ProjectTemplate
+export default ProjectTemplate;

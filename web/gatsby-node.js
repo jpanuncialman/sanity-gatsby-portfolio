@@ -1,15 +1,17 @@
-const {isFuture} = require('date-fns')
+const { isFuture } = require("date-fns");
 /**
  * Implement Gatsby's Node APIs in this file.
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-async function createProjectPages (graphql, actions, reporter) {
-  const {createPage} = actions
+async function createProjectPages(graphql, actions, reporter) {
+  const { createPage } = actions;
   const result = await graphql(`
     {
-      allSanitySampleProject(filter: {slug: {current: {ne: null}}, publishedAt: {ne: null}}) {
+      allSanitySampleProject(
+        filter: { slug: { current: { ne: null } }, publishedAt: { ne: null } }
+      ) {
         edges {
           node {
             id
@@ -21,31 +23,31 @@ async function createProjectPages (graphql, actions, reporter) {
         }
       }
     }
-  `)
+  `);
 
-  if (result.errors) throw result.errors
+  if (result.errors) throw result.errors;
 
-  const projectEdges = (result.data.allSanitySampleProject || {}).edges || []
+  const projectEdges = (result.data.allSanitySampleProject || {}).edges || [];
 
   projectEdges
     .filter(edge => !isFuture(edge.node.publishedAt))
     .forEach(edge => {
-      const id = edge.node.id
-      const slug = edge.node.slug.current
-      const path = `/project/${slug}/`
+      const id = edge.node.id;
+      const slug = edge.node.slug.current;
+      const path = `/project/${slug}/`;
 
-      reporter.info(`Creating project page: ${path}`)
+      reporter.info(`Creating project page: ${path}`);
 
       createPage({
         path,
-        component: require.resolve('./src/templates/project.js'),
-        context: {id}
-      })
-    })
+        component: require.resolve("./src/templates/project.js"),
+        context: { id, slug }
+      });
+    });
 }
 
-async function createSitePages (graphql, actions, reporter) {
-  const {createPage} = actions
+async function createSitePages(graphql, actions, reporter) {
+  const { createPage } = actions;
   const result = await graphql(`
     {
       allSanityPage {
@@ -61,33 +63,32 @@ async function createSitePages (graphql, actions, reporter) {
         }
       }
     }
-  `)
+  `);
 
-  if (result.errors) throw result.errors
+  if (result.errors) throw result.errors;
 
-  const pageEdges = (result.data.allSanityPage || {}).edges || []
+  const pageEdges = (result.data.allSanityPage || {}).edges || [];
 
-  pageEdges
-    .forEach(edge => {
-      const id = edge.node.id
-      const slug = edge.node.slug.current
-      const path = `/${slug}/`
+  pageEdges.forEach(edge => {
+    const id = edge.node.id;
+    const slug = edge.node.slug.current;
+    const path = `/${slug}/`;
 
-      reporter.info(`Creating project page: ${path}`)
+    reporter.info(`Creating project page: ${path}`);
 
-      createPage({
-        path,
-        component: require.resolve('./src/templates/page.js'),
-        context: {id}
-      })
-    })
+    createPage({
+      path,
+      component: require.resolve("./src/templates/page.js"),
+      context: { id }
+    });
+  });
 }
 
-async function createSiteCategories (graphql, actions, reporter) {
-  const {createPage} = actions
+async function createSiteCategories(graphql, actions, reporter) {
+  const { createPage } = actions;
   const result = await graphql(`
     {
-      allSanityCategory(filter: {slug: {current: {ne: null}}}) {
+      allSanityCategory(filter: { slug: { current: { ne: null } } }) {
         edges {
           node {
             id
@@ -98,33 +99,32 @@ async function createSiteCategories (graphql, actions, reporter) {
         }
       }
     }
-  `)
+  `);
 
-  if (result.errors) throw result.errors
+  if (result.errors) throw result.errors;
 
-  const categoryEdges = (result.data.allSanityCategory || {}).edges || []
+  const categoryEdges = (result.data.allSanityCategory || {}).edges || [];
 
-  categoryEdges
-    .forEach(edge => {
-      const id = edge.node.id
-      const slug = edge.node.slug.current
-      const path = `/${slug}/`
+  categoryEdges.forEach(edge => {
+    const id = edge.node.id;
+    const slug = edge.node.slug.current;
+    const path = `/${slug}/`;
 
-      reporter.info(`Creating category page: ${path}`)
+    reporter.info(`Creating category page: ${path}`);
 
-      createPage({
-        path,
-        component: require.resolve('./src/templates/category.js'),
-        context: {slug}
-      })
-    })
+    createPage({
+      path,
+      component: require.resolve("./src/templates/category.js"),
+      context: { slug }
+    });
+  });
 }
 
-exports.createPages = async ({graphql, actions, reporter}) => {
-  await createProjectPages(graphql, actions, reporter)
-  await createSitePages(graphql, actions, reporter)
-  await createSiteCategories(graphql, actions, reporter)
-}
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  await createProjectPages(graphql, actions, reporter);
+  await createSitePages(graphql, actions, reporter);
+  await createSiteCategories(graphql, actions, reporter);
+};
 
 // exports.onCreateWebpackConfig = ({
 //   stage,
